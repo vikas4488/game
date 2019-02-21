@@ -1,0 +1,182 @@
+<head>
+<style> 
+#nm {
+
+  position: absolute;
+}
+#gm {
+
+  position: absolute;
+}
+#me{
+
+width:100%;
+height:150px;
+}
+</style>
+
+
+</head>
+<body>
+<span>enter ur name</span>
+<input type="text" id="ip" />
+<button id="bu" onclick="display()">print</button>
+<button  onclick="myMove()">move</button>
+<button  onclick="stopMe()">stop</button>
+<button  onclick="clr()">clear</button>
+<div id="me"></div>
+<div id="nm"></div>
+
+<script>
+var A = "6+i+n==j||6-i+n==j||(i==5&&j>=1+n&&j<=11+n)";
+var B = "((i==0&&j!=14+n||i==3&&j!=14+n||i==6&&j!=14+n)&&j>=5+n&&j<=13+n)||(j==5+n)||(j==14+n&&i!=0&&i!=3&&i!=6)";
+var C = "((i==0&&j!=n+14&&j!=n+5||i==6&&j!=n+14&&j!=n+5)&&j>=n+5&&j<=n+13)||(j==n+5&&i!=0&&i!=6)||(j==14+n&&(i==1||i==5))";
+var D = "((i==0&&j!=n+14&&j!=n+14||i==6&&j!=n+14)&&j>=n+5&&j<=n+13)||(j==n+5)||(j==n+14&&i!=0&&i!=6)";
+var E = "((i==0||i==3||i==6)&&j>=n+5&&j<=n+13)||(j==n+5)";
+var F = "((i==0||i==3)&&j>=n+5&&j<=n+13)||(j==n+5)";
+var G = "((i==0||i==3&&j>=n+10||i==6)&&j>=n+5&&j<=n+13)||(j==n+5)||(j==n+14&&i!=2)";
+var H = "((i==3)&&j>=n+5&&j<=n+13)||(j==n+5)||(j==n+14)";
+var I = "((i==0||i==6)&&j>=n+4&&j<=n+12)||(j==n+8)";
+var J = "((i==6)&&j>=n&&j<=n+8)||(j==n&&i>=4)||(j==n+9)";
+var K = "j==n+2||(j==n+6-i&&i<4)||(j==n+0+i&&i>=4)";
+var L = "((i==6)&&j>=n&&j<=n+8)||(j==n)";
+var M = "j==n+2||(j==n+8-i&&j>5+n)||(j==n+i+2&&j<6+n)||j==n+8";
+var N = "j==n+2||(j==n+i+2)||j==n+8";
+var O = "((i==0&&j!=n+14&&j!=n+5||i==6&&j!=n+14&&j!=n+5)&&j>=n+5&&j<=n+13)||(j==n+5&&i!=0&&i!=6)||(j==n+14&&i!=0&&i!=6)";
+var P = "((i==0&&j!=n+14||i==3&&j!=n+14)&&j>=n+5&&j<=n+13)||(j==n+5)||(j==n+14&&i!=0&&i!=3&&i<4)";
+var Q = "((i==0&&j!=n+14&&j!=n+5||i==6&&j!=n+14&&j!=n+5)&&j>=n+5&&j<=n+13)||(j==n+5&&i!=0&&i!=6)||(j==n+14&&i!=0&&i!=6)||(i+7+n==j&&i>3)";
+var R = "((i==0&&j!=n+14||i==3&&j!=n+14)&&j>=n+5&&j<=n+13)||(j==n+5)||(j==n+14&&i!=0&&i!=3&&i<4)||(i+5+n==j&&i>3)";
+var S = "((i==0||i==3||i==6)&&j>=n+5&&j<=n+13)||(j==n+5&&i!=4)||(j==n+14&&i!=2)";
+var T = "((i==0)&&j>=n+5&&j<=n+13)||(j==n+9)";
+var U = "((i==6&&j!=n+8&&j!=n)&&j>=n&&j<=n+8)||(j==n&&i!=6)||(j==n+8&&i!=6)";
+var V = "i+n==j||i==(13-j+n)";
+var W = "j==n+2||(j==n+8-i&&j<5+n)||(j==n+i+2&&j>4+n)||j==n+8";
+var X = "(j==n+8-i)||(j==n+i+2)";
+var Y = "(j==n+8-i)||(j==n+i+2&&j<6+n)";
+var Z = "(j==n+8-i)||i==0&&j<=n+8&&j>=n+2||i==6&&j<=n+8&&j>=n+2";
+var name="";
+function display(){
+var str=document.getElementById("ip").value;
+
+str=str.toUpperCase();
+var ex="";
+var mul=0;
+var len=str.length;
+len=len*15;
+for(var i=0;i<str.length;i++)
+{
+if(ex!="")
+ex=ex+"||";
+var t=str.charAt(i);
+if(t=='A')
+ex=ex+A.replace(/n/g,"n+"+mul);
+else if(t=='B')
+ex=ex+B.replace(/n/g,"n+"+mul);
+else if(t=='C')
+ex=ex+C.replace(/n/g,"n+"+mul);
+else if(t=='D')
+ex=ex+D.replace(/n/g,"n+"+mul);
+else if(t=='E')
+ex=ex+E.replace(/n/g,"n+"+mul);
+else if(t=='F')
+ex=ex+F.replace(/n/g,"n+"+mul);
+else if(t=='G')
+ex=ex+G.replace(/n/g,"n+"+mul);
+else if(t=='H')
+ex=ex+H.replace(/n/g,"n+"+mul);
+else if(t=='I')
+ex=ex+I.replace(/n/g,"n+"+mul);
+else if(t=='J')
+ex=ex+J.replace(/n/g,"n+"+mul);
+else if(t=='K')
+ex=ex+K.replace(/n/g,"n+"+mul);
+else if(t=='L')
+ex=ex+L.replace(/n/g,"n+"+mul);
+else if(t=='M')
+ex=ex+M.replace(/n/g,"n+"+mul);
+else if(t=='N')
+ex=ex+N.replace(/n/g,"n+"+mul);
+else if(t=='O')
+ex=ex+O.replace(/n/g,"n+"+mul);
+else if(t=='P')
+ex=ex+P.replace(/n/g,"n+"+mul);
+else if(t=='Q')
+ex=ex+Q.replace(/n/g,"n+"+mul);
+else if(t=='R')
+ex=ex+R.replace(/n/g,"n+"+mul);
+else if(t=='S')
+ex=ex+S.replace(/n/g,"n+"+mul);
+else if(t=='T')
+ex=ex+T.replace(/n/g,"n+"+mul);
+else if(t=='U')
+ex=ex+U.replace(/n/g,"n+"+mul);
+else if(t=='V')
+ex=ex+V.replace(/n/g,"n+"+mul);
+else if(t=='W')
+ex=ex+W.replace(/n/g,"n+"+mul);
+else if(t=='X')
+ex=ex+X.replace(/n/g,"n+"+mul);
+else if(t=='Y')
+ex=ex+Y.replace(/n/g,"n+"+mul);
+else if(t=='Z')
+ex=ex+Z.replace(/n/g,"n+"+mul);
+mul=mul+15;
+}
+//document.getElementById("me").innerHTML = ex;
+var n=0;
+for(var i=0;i<7;i++)
+{
+	for(var j=0;j<len;j++)
+		{
+       if(eval(ex)){
+       
+        name=name+"*";
+        }
+        else {
+      
+        name=name+"&nbsp"+"&nbsp";
+        }
+        }
+    
+     name=name+"<br>"
+ }
+
+ document.getElementById("nm").innerHTML = name;
+ }
+ var pos = 0;
+function clr(){
+document.getElementById("nm").innerHTML="";
+name="";
+}
+ var c1=0;
+ var c2=0;
+ var c3=0;
+ var pos = 0;
+ var id;
+ var mv=0;
+ function myMove() {
+if(mv==0){
+mv=1;
+  var elem = document.getElementById("nm");   
+  
+  id = setInterval(frame, 5);
+  
+  function frame() {
+  
+    if (pos == 700) {
+      pos=-700;
+    } else  {
+      pos++; 
+      
+      elem.style.left = pos + "px"; 
+    
+    }
+  }
+  }
+}
+function stopMe(){
+mv=0;
+clearInterval(id);
+}
+</script>
+</body>
