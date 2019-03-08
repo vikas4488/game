@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<head>
 <style>
-#container {
-  width: 600px;
-  height: 220px;
-  position: relative;
-  background: skyblue;
+#gameField {
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  background: #bae1f8;
 }
-#animate {
+#ballid {
   width: 20px;
   height: 20px;
   position: absolute;
-  margin-top: 170px;
-  margin-left: 240px;
+  top: 190px;
+  
   background-color: tomato;
   border-radius: 25px;
 }
@@ -20,145 +23,277 @@
   width: 70px;
   height: 10px;
   position: absolute;
-  margin-top: 190px;
-  margin-left: 220px;
+  top: 210px;
+  left: 220px;
   background-color: black;
 }
 .brick {
   width: 40px;
   height: 20px;
-  
+  position: absolute;
   background-color: lightgreen;
+  display:inline-block;
+  border: 1px solid black;
+}
+#btn {
+background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  margin:120px 380px;
+}
+#btn_left {
+opacity: 0;
+  cursor: pointer;
+  width:50%;
+  height:80%;
   
+}
+#btn_right {
+opacity: 0;
+  cursor: pointer;
+  width:50%;
+  height:80%;
+  margin-left:50%;
+}
+#slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 30px;
+  background-color: #bae1f8;
+  outline: none;
+  
+  -webkit-transition: .2s;
+  
+  position: absolute;
+  top: 210px;
+  margin-left:0px;
+}
+
+#slider:not:hover  {
+  opacity: 1;
+}
+
+#slider::-webkit-slider-thumb {
+opacity: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 70px;
+  height: 30px;
+  background-color: blue;
+  cursor: pointer;
+  border-radius:5px;
+  margin-top:0px;
 }
 </style>
 <body>
 
-<p><button onclick="stp()">Click Me</button></p> 
 
-<div id ="container">
-<span id="1" class="brick" style="display:inline-block;">1</span>
-<span id="2" class="brick" style="display:inline-block;">2</span>
-<span id="3" class="brick"style="display:inline-block;">3</span>
-<span id="4"class="brick"style="display:inline-block;">4</span>
-<span id="5"class="brick"style="display:inline-block;">5</span>
-<span id="6"class="brick"style="display:inline-block;">6</span>
-<span id="7" class="brick"style="display:inline-block;">3</span>
-<span id="8"class="brick"style="display:inline-block;">4</span>
-<span id="9"class="brick"style="display:inline-block;">5</span>
-<span id="10"class="brick"style="display:inline-block;">6</span>
-<span id="11" class="brick"style="display:inline-block;">3</span>
-<span id="12"class="brick"style="display:inline-block;">4</span>
-<span id="13"class="brick"style="display:inline-block;">5</span>
+<div id ="gameField">
+<span id="SCORE "></span>
+<div id="brickgameField">
+<script>
 
+var gfield=document.getElementById("gameField").getBoundingClientRect();
+var gamefiledbottom=gfield.bottom;
+var gamefiledtop=gfield.top
+var gamefiledleft=gfield.left
+var gamefiledright=gfield.right;
 
-  <div id ="animate"></div>
-  <div id ="board"></div>
-  <div id ="ang"></div>
+for(var row=1;row<=gamefiledbottom/40;row++)
+{
+for(var col=0;col<gamefiledright-40;col=col+40)
+{
+var bid=row*10000+col;
+document.write(
+"<span id='"+bid+"'class='brick' style='top:"+row*20+"px;left:"+col+"px;display:inline-block;'></span>"
+);
+var cr1=Math.floor(Math.random() * 1000)-100;
+var cr2=Math.floor(Math.random() * 1000)-100;
+var cr3=Math.floor(Math.random() * 1000)-100;
+document.getElementById(bid).style.backgroundColor="rgb("+cr1+","+cr2+","+cr3+")";
+}
+document.write("<br>");
+}
+</script>
 </div>
 
+  <div id ="ballid"></div>
+ 
+ <script>
+ document.write("<input type='range' min='8' max="+gamefiledright+" value="+(gamefiledright/2)+" id='slider'>");
+  </script>
+</div>
+
+
+<button id="btn" style="position:absolute; display:none"
+onClick="window.location.reload()">
+ReStart</button>
+
 <script>
-var boardMove = document.getElementById("board"); 
-var elem = document.getElementById("animate");   
-var boardPose=0;
-var posRight = 0;
-var posTop = 0;
+var boardMove = document.getElementById("slider"); 
+ 
+var elem = document.getElementById("ballid");   
+boardMove.style.top=gamefiledbottom-18+"px";
+elem.style.top=gamefiledbottom-38+"px";
+elem.style.right=gamefiledright/2+"px";
 var c1=0;
 var c2=0;
 var id;
-var marginTop=20;
-var posTopLimit=-170;
 var t1=1;
-document.onkeydown = function(evt) {
-    if (evt.keyCode == 39&&boardPose<310) {
-    	boardPose=boardPose+10;
-        boardMove.style.left = boardPose + "px"; 
-        document.getElementById("ang").innerHTML=boardPose;
-    }
-    if (evt.keyCode == 37&&boardPose>-220) {
-    	boardPose=boardPose-10;
-        boardMove.style.left = boardPose + "px"; 
-        document.getElementById("ang").innerHTML=boardPose;
-    }
-    if (evt.keyCode == 38) {
-    	id = setInterval(frame, 5);
-  	function frame() {
-    	if(document.getElementById("1").style.display=="inline-block"
-        &&t1==1)
-       { t1=0;
-    	//posTopLimit=posTopLimit+20;
-    	}
-        else if(document.getElementById("1").style.visibility == "hidden"
-        &&t1==0)
-        {
-        t1=2;
-    	//posTopLimit=posTopLimit-20;
+
+var boardPosFromLeft=parseInt(boardMove.style.left)-0;
+var ballPosNuteralFromLeft=0;
+var ballPosFromLeft=parseInt(elem.getBoundingClientRect().left)-8;
+var ballPosNuteralFromTop=0;
+var ballPosFromTop=parseInt(elem.getBoundingClientRect().top)-8;
+var brikVisible;
+var idg=0;
+var idg2=0;
+var idg3=0;
+var idg4=0;
+var gameActive=0;
+var score=0;
+var slidBalance=0;
+window.addEventListener("touchend", gameStart);
+window.addEventListener("keypress", gameStart);
+function gameStart() {
+
+   if(gameActive==0){
+    gameActive=1;
+   	id = setInterval(frame, 1);
+ function frame() {
+   				var bltop=parseInt(elem.getBoundingClientRect().top);
+            	var blleft=parseInt(elem.getBoundingClientRect().left);
+                
+                var blbtm=parseInt(elem.getBoundingClientRect().bottom);
+            	var blright=parseInt(elem.getBoundingClientRect().right);
+                
+               var brdleft=parseInt(boardMove.getBoundingClientRect().left);
+             var brdright=parseInt(boardMove.getBoundingClientRect().right);
+    			var slid=parseInt(boardMove.value);
+            
+            
+                if((blleft<(parseInt(slid)-10-(70/gamefiledright)*(parseFloat(slid)))
+                ||blleft>(parseInt(slid)+70+10-(70/gamefiledright)*(parseFloat(slid))))
+                &&blbtm==parseInt(gamefiledbottom)-10
+                )
+                {
+                elem.style.backgroundColor="black";
+                clearInterval(id);
+                var gameOver=
+                document.getElementById("brickgameField");
+                gameOver.style.color="red";
+                gameOver.style.margin="80px 200px 200px 150px";
+                gameOver.style.fontSize = "xx-large";
+                gameOver.innerHTML="GAME OVER";
+                document.getElementById("btn").style.display="block";
+                
+                }
+                else
+                elem.style.backgroundColor="tomato";
+                
+                if((blleft-48)%40==0)
+                {
+                idg3=parseInt((bltop-10)/20)*10000
+                +parseInt((blleft-48)/40)*40;
+                var ty3=document.getElementById(idg3);
+                if(ty3 && ty3.style.display=="inline-block")
+                {ty3.style.display="none";
+                c2=1;
+                score=score+100;
+                document.getElementById("SCORE ").innerHTML="SCORE "+score;
+                }
+                }
+                
+                if((blright-8)%40==0)
+                {
+                idg4=parseInt((bltop+10)/20)*10000
+                +parseInt((blright-8)/40)*40;
+                var ty4=document.getElementById(idg4);
+                if(ty4 && ty4.style.display=="inline-block")
+                {ty4.style.display="none";
+                c2=0;
+                score=score+100;
+                document.getElementById("SCORE ").innerHTML="SCORE "+score;
+                }
+                
+                }
+                
+                if((blbtm-8)%20==0)
+                {
+                idg2=(blbtm-8)/20;
+                idg2=idg2*10000+parseInt((blright+10)/40)*40;
+                var ty2=document.getElementById(idg2);
+                if(ty2 && ty2.style.display=="inline-block")
+                {ty2.style.display="none";
+                c1=0;
+                score=score+100;
+                document.getElementById("SCORE ").innerHTML="SCORE "+score;
+                }
+                }
+                
+                if((bltop-30)%20==0)
+                {
+                idg=(bltop-30)/20;
+                idg=idg*10000+parseInt((blleft-10)/40)*40;
+                var ty=document.getElementById(idg);
+                if(ty && ty.style.display=="inline-block")
+                {ty.style.display="none";
+                c1=1;
+                score=score+100;
+                document.getElementById("SCORE ").innerHTML="SCORE "+score;
+                }
+                }
+           
+           
+            
+    	if(ballPosFromTop>=gamefiledbottom-38)
+        {c1=0;
+      		
+        }
+        else if(ballPosFromTop<=0)
+        {c1=1;
+        
         }
         
-        if(posTop<=-150)
-        {
-        if(posRight>300&&posRight<=340)
-       document.getElementById("13").style.visibility = "hidden";
-        if(posRight>220&&posRight<=260)
-       document.getElementById("12").style.visibility = "hidden";
-        if(posRight>180&&posRight<=220)
-       document.getElementById("11").style.visibility = "hidden";
-        if(posRight>140&&posRight<=180)
-       document.getElementById("10").style.visibility = "hidden";
-        if(posRight>100&&posRight<=140)
-       document.getElementById("9").style.visibility = "hidden";
-        if(posRight>60&&posRight<=100)
-       document.getElementById("8").style.visibility = "hidden";
-        if(posRight>20&&posRight<=60)
-       document.getElementById("7").style.visibility = "hidden";
-        if(posRight>-20&&posRight<=20)
-       document.getElementById("6").style.visibility = "hidden";
-        if(posRight>-80&&posRight<=-20)
-       document.getElementById("5").style.visibility = "hidden";
-        if(posRight>-120&&posRight<=-80)
-       document.getElementById("4").style.visibility = "hidden";
-        if(posRight>-160&&posRight<=-120)
-       document.getElementById("3").style.visibility = "hidden";
-       if(posRight>-200&&posRight>=-160)
-       document.getElementById("2").style.visibility = "hidden";
-       if(posRight>=-240&&posRight<=-200)
-       document.getElementById("1").style.visibility = "hidden";
+        
+        if(ballPosFromLeft>=gamefiledright-28)
+        {c2=0;
+    
         }
+        else if((ballPosFromLeft<=0))
+        {c2=1;
         
-    	if(posTop<=posTopLimit)
-        c1=1;
-        else if(posTop>=marginTop)//if we add bricks to top then
-        c1=0;
-        if(posRight<=-240)
-        c2=1;
-        else if(posRight>=340)
-        c2=0;
-        
+        }
+      
         if(c1==1)
-        posTop=posTop+0.5
+        ballPosFromTop=parseFloat(ballPosFromTop)+0.5;
        else
-        posTop=posTop-0.5
+        ballPosFromTop=parseFloat(ballPosFromTop)-0.5;
         
         if(c2==1)
-      posRight=posRight+0.5;
+      ballPosFromLeft=parseFloat(ballPosFromLeft)+0.5;
       else
-     posRight=posRight-0.5;
-      elem.style.top = posTop + "px"; 
-      elem.style.left = posRight + "px"; 
-      document.getElementById("ang").innerHTML=posTop+" "+posRight;
-      if(posTop==marginTop&&(posRight+40<=boardPose
-      ||posRight-50>=boardPose))
-      {clearInterval(id);
-      document.getElementById("ang").innerHTML="GAME OVER";
-      }
-    }
+     ballPosFromLeft=parseFloat(ballPosFromLeft)-0.5;
+     
+      elem.style.top = ballPosFromTop-ballPosNuteralFromTop + "px"; 
+      elem.style.left = ballPosFromLeft-ballPosNuteralFromLeft + "px"; 
+     
+      
   
-    }
-};
+  }
+    } 
+  
+   
 
-function stp(){
-clearInterval(id);
-document.getElementById("ang").innerHTML=posTop+" "+posRight;
 }
 
 
